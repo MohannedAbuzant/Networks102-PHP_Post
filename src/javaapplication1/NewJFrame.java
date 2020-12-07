@@ -203,10 +203,13 @@ public class NewJFrame extends javax.swing.JFrame {
     
     String[] strURLs = {
         "http://127.0.0.1:81/java.php",
-        "http://localhost:8084/hello/index.jsp",
-        "http://localhost:8084/hello/response3.jsp",
-        "http://localhost:8084/hello/response4.jsp",
-        "http://localhost:8084/hello/responseServlet"
+        "http://127.0.0.1:81/upload.php",
+         "http://127.0.0.1:81/Download.php",
+        "http://localhost:8080/hello/Upload",
+        "http://localhost:8080/hello/download",
+        "http://localhost:8080/hello/response3.jsp",
+        "http://localhost:8080/hello/response4.jsp",
+        "http://localhost:8080/hello/responseServlet"
     };
     
     String Authorization = ""; 
@@ -223,7 +226,7 @@ public class NewJFrame extends javax.swing.JFrame {
         this.jTextField4.setText(str);
     }
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
+        dataStr="";
         OutputStream os;
         InputStream is;
        JFileChooser choose = new JFileChooser();
@@ -236,7 +239,7 @@ public class NewJFrame extends javax.swing.JFrame {
             
          addParameter("image","./pic/"+imageChooser.getSelectedItem().toString().trim());
          
-            String urlStr = "http://127.0.0.1:81/Download.php";
+            String urlStr = jTextField4.getText();
             try {
                 URL myURL = new URL(urlStr);
                 URLConnection myConn = myURL.openConnection();
@@ -304,20 +307,21 @@ public class NewJFrame extends javax.swing.JFrame {
     private void BrowseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BrowseActionPerformed
         // TODO add your handling code here:
         if(Authorization.contains("Authorized user")){
+            dataStr="";
               imageChooser.removeAllItems();
         
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "JPG & GIF Images", "jpg", "gif","PNG");
         chooser.setFileFilter(filter);
-        int returnVal = chooser.showOpenDialog(null);
+            int returnVal = chooser.showOpenDialog(null);
         if(returnVal == JFileChooser.APPROVE_OPTION) {
            
         }
          
         OutputStream os;
         InputStream is;
-       File f =  new File(chooser.getSelectedFile().getAbsolutePath().toString().trim());
+       File f =  new File(chooser.getSelectedFile().getAbsolutePath());
         FileInputStream fileInputStreamReader = null;
             try {
                 fileInputStreamReader = new FileInputStream(f);
@@ -326,9 +330,12 @@ public class NewJFrame extends javax.swing.JFrame {
             }
             byte[] bytes = new byte[(int)f.length()];
             try {
+                
                 fileInputStreamReader.read(bytes);
                 String image = Base64.getEncoder().encodeToString(bytes);
+                
                  addParameter("image", image);
+                 
                  
             } catch (IOException ex) {
                 Logger.getLogger(NewJFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -336,7 +343,8 @@ public class NewJFrame extends javax.swing.JFrame {
        String imageName=chooser.getSelectedFile().getName().trim();
        System.out.println(imageName);
     addParameter("imageName",imageName);
-        String urlStr = "http://127.0.0.1:81/upload.php";
+    System.out.println(f.getAbsolutePath());
+        String urlStr =jTextField4.getText();
             try {
             URL myURL = new URL(urlStr);
             URLConnection myConn = myURL.openConnection();
@@ -361,7 +369,7 @@ public class NewJFrame extends javax.swing.JFrame {
                     mm = mm + (char) b;
                 };
             }
-//            this.jTextArea1.setText(mm);
+//           this.jTextArea1.setText(mm);
          
           imageChooser.addItem("select Image");
 
