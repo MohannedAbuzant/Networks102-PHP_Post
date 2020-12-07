@@ -13,8 +13,7 @@ if (!($conn)) {
   die("Connection failed: " . $conn->connect_error);
 }
 echo "Connected successfully \n";
-$encryptedpassword=sha1($Password);
-$sql="select * from authoriedusers where userName='$userName'and password='$encryptedpassword'";
+$sql="select * from authoriedusers where userName='$userName'and password='$Password'";
 
 $result=mysqli_query($conn,$sql);
 $row=mysqli_fetch_array($result);
